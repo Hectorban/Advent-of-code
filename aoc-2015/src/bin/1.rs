@@ -1,7 +1,7 @@
 use std::fs;
 
 fn main() {
-    let input = fs::read_to_string("input.txt").expect("Problem while reading from file."); 
+    let input = fs::read_to_string("input/1-2.txt").expect("Problem while reading from file."); 
     let floor_level = floor_resolver(input);    
     println!("The floor level is: {}", floor_level);
 }

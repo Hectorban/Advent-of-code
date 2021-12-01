@@ -1,7 +1,7 @@
 use std::fs;
 
 fn main() {
-    let input = fs::read_to_string("input.txt").expect("Problem while reading from file."); 
+    let input = fs::read_to_string("input/1-2.txt").expect("Problem while reading from file."); 
     let first_char = first_char_in_basement(input);
     println!("The first char that entered the bastement is: {}", first_char);
 }
