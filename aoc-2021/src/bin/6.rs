@@ -16,7 +16,7 @@ fn calculate_life_system_rating(acc_1: char, acc_2: char) -> isize {
   let mut life_system: Vec<&str> = input.lines().collect();
 
   for (index, _character) in diag_chars.enumerate() {
-    if life_system.clone().into_iter().count() == 1 { break; }
+    if life_system.clone().into_iter().count() == 1 { break }
     let arrays_slice: Vec<usize> = life_system.clone().into_iter().map(|d| d.chars().nth(index).unwrap().to_digit(10).unwrap() as usize).collect();
     let ammount_of_1: usize = arrays_slice.clone().into_iter().sum();
     let ammount_of_0: usize = arrays_slice.clone().into_iter().fold(0, |acc, x| acc + if x == 0 {1} else {0});
