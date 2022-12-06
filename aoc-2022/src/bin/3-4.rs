@@ -8,7 +8,7 @@ fn main() {
 
 fn first_part(input: &String) -> i32 {
     let lines = input.lines();
-    let round_points = lines.into_iter().map(|round| {
+    lines.into_iter().map(|round| {
         let mut chars = round.chars();
         let opponent = chars.next().unwrap();
         let player_obf = chars.nth(1).unwrap();
@@ -16,8 +16,7 @@ fn first_part(input: &String) -> i32 {
         let play_points = play_to_points(&player);
         let match_points = calc_rps(player, opponent);
         play_points + match_points
-    });
-    round_points.sum()
+    }).sum()
 }
 
 fn convert_player_to_abc(play: char) -> char {
@@ -67,7 +66,7 @@ fn play_to_points(play: &char) -> i32 {
 
 fn second_part(input: String) -> i32 {
     let lines = input.lines();
-    let round_points = lines.into_iter().map(|round| {
+    lines.into_iter().map(|round| {
         let mut chars = round.chars();
         let opponent = chars.next().unwrap();
         let round_result = chars.nth(1).unwrap();
@@ -75,8 +74,7 @@ fn second_part(input: String) -> i32 {
         let play_points = play_to_points(&player);
         let match_points = calc_rps(player, opponent);
         play_points + match_points
-    });
-    round_points.sum()
+    }).sum()
 }
 
 fn calculate_play(round_result: char, opponent: char) -> char {
