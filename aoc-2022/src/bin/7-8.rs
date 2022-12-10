@@ -20,7 +20,7 @@ fn gen_range(range: &str) -> HashSet<i32> {
     let mut split = range.split("-");
     let start: i32 = split.next().unwrap().parse().unwrap();
     let end: i32 = split.next().unwrap().parse().unwrap();
-    std::ops::RangeInclusive::new(start, end).collect()
+    (start..=end).collect()
 }
 
 fn second_part(input: String) -> usize {
