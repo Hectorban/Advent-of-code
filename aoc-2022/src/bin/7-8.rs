@@ -10,9 +10,9 @@ fn first_part(input: &String) -> usize {
     let lines = input.lines();
     lines.into_iter().filter(|line| {
         let mut split = line.split(",");
-        let first_elf = gen_range(split.next().unwrap());
-        let second_elf = gen_range(split.next().unwrap());
-        (&first_elf - &second_elf).is_empty() || (&second_elf - &first_elf).is_empty()
+        let first = gen_range(split.next().unwrap());
+        let second = gen_range(split.next().unwrap());
+        second.iter().all(|i| first.contains(i)) || first.iter().all(|i| second.contains(i))
     }).collect::<Vec<&str>>().len()
 }
 
