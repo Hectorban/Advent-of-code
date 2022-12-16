@@ -13,7 +13,6 @@ fn first_part(input: &String) -> String {
     instructions.remove(0);
     instructions.remove(0);
     let mut matrix = create_box_matrix(boxes);
-    println!("{:?}", matrix);
     for instruction in instructions {
         let (ammount, from, to) = parse_instruction(instruction);
         for _ in 0..ammount {
@@ -48,6 +47,18 @@ fn parse_instruction(instruction: &str) -> (usize, usize, usize) {
     (ammount, from, to)
 }
 
-fn second_part(input: String) -> usize {
-    0
+fn second_part(input: String) -> String {
+    let lines = input.lines();
+    let mut boxes: Vec<&str> = lines.collect();
+    let mut instructions = boxes.split_off(8);
+    instructions.remove(0);
+    instructions.remove(0);
+    let mut matrix = create_box_matrix(boxes);
+    for instruction in instructions {
+        let (ammount, from, to) = parse_instruction(instruction);
+        let final_length = matrix[from-1].len().saturating_sub(ammount);
+        let mut tail_box = matrix[from-1].split_off(final_length);
+        matrix[to-1].append(&mut tail_box);
+    }
+    matrix.into_iter().fold("".to_string(),|acc, a| format!("{}{}", acc, a.last().unwrap().to_string()))
 }
