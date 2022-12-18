@@ -1,7 +1,7 @@
 use std::{fs, collections::HashSet};
 
 fn main() {
-    let input = fs::read_to_string("inputs/7-8.txt").expect("Problem while reading from file.");
+    let input = fs::read_to_string("inputs/4.txt").expect("Problem while reading from file.");
     println!("First: {}", first_part(&input));
     println!("Second: {}", second_part(input));
 }

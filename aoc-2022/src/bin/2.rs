@@ -1,7 +1,7 @@
 use std::fs;
 
 fn main() {
-    let input = fs::read_to_string("inputs/3-4.txt").expect("Problem while reading from file.");
+    let input = fs::read_to_string("inputs/2.txt").expect("Problem while reading from file.");
     println!("First: {}", first_part(&input));
     println!("Second: {}", second_part(input));
 }

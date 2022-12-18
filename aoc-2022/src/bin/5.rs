@@ -1,7 +1,7 @@
 use std::fs;
 
 fn main() {
-    let input = fs::read_to_string("inputs/9-10.txt").expect("Problem while reading from file.");
+    let input = fs::read_to_string("inputs/5.txt").expect("Problem while reading from file.");
     println!("First: {}", first_part(&input));
     println!("Second: {}", second_part(input));
 }
@@ -20,7 +20,7 @@ fn first_part(input: &String) -> String {
             matrix[to-1].push(moved_box.clone());
         }
     }
-    matrix.into_iter().fold("".to_string(),|acc, a| format!("{}{}", acc, a.last().unwrap().to_string()))
+    matrix.into_iter().fold("".to_string(), |acc, a| format!("{}{}", acc, a.last().unwrap().to_string()))
 }
 
 fn create_box_matrix(boxes: Vec<&str>) -> Vec<Vec<String>> {
@@ -60,5 +60,5 @@ fn second_part(input: String) -> String {
         let mut tail_box = matrix[from-1].split_off(final_length);
         matrix[to-1].append(&mut tail_box);
     }
-    matrix.into_iter().fold("".to_string(),|acc, a| format!("{}{}", acc, a.last().unwrap().to_string()))
+    matrix.into_iter().fold("".to_string(), |acc, a| format!("{}{}", acc, a.last().unwrap().to_string()))
 }
