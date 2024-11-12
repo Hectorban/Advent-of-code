@@ -8,6 +8,7 @@ fn main() {
 
     let mut sum = 0;
     let mut last_value = 0;
+
     for val in &values {
         if val == &last_value {
             sum += val
@@ -20,4 +21,3 @@ fn main() {
 
     println!("Sum: {}", sum);
 }
-
