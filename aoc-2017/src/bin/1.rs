@@ -15,8 +15,9 @@ fn main() {
         }
         last_value = *val
     }
+
     if values.last().unwrap() == values.first().unwrap() {
-        sum += values.first().unwrap();
+        sum += values.last().unwrap();
     }
 
     println!("Sum: {}", sum);
