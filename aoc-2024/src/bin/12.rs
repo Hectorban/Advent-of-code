@@ -14,8 +14,9 @@ fn main() {
     use std::time::Instant;
     let now = Instant::now();
 
+    let mut current_position = (0, 0);
     let mut starting_position = (0, 0);
-    let mut text: Vec<Vec<char>> = INPUT
+    let text: Vec<Vec<char>> = INPUT
         .lines()
         .map(|l| l.chars().collect::<Vec<char>>())
         .collect();
@@ -23,33 +24,45 @@ fn main() {
     for (j, line) in text.iter().enumerate() {
         for (i, &char) in line.iter().enumerate() {
             if char == '^' {
+                current_position = (i, j);
                 starting_position = (i, j);
             }
         }
     }
 
-    let rows = text.len();
-    let cols = text[0].len();
+    let mut current_direction_i = 0;
+    let cols = text.len();
+    let rows = text[0].len();
     let mut sum = 0;
+    let mut obstacles_checked: HashSet<(isize, isize)> = HashSet::new();
 
-    for row in 0..rows {
-        for col in 0..cols {
-            if text[row][col] == '#' {
-                continue;
+    loop {
+        let nx = current_position.0 as isize + DIRECTIONS[current_direction_i].0;
+        let ny = current_position.1 as isize + DIRECTIONS[current_direction_i].1;
+
+        if nx < 0 || ny < 0 || nx >= cols as isize || ny >= rows as isize {
+            break
+        }
+
+        let next_position = text[ny as usize][nx as usize];
+
+        if next_position == '#' {
+            current_direction_i = (current_direction_i + 1) % 4;
+        } else {
+            let mut alternate_text = text.clone();
+            alternate_text[ny as usize][nx as usize] = '0';
+            if is_in_endless_loop(&alternate_text, starting_position, cols, rows) {
+                if obstacles_checked.insert((nx, ny)) {
+                    sum += 1;
+                }
             }
-            // Avoid copies
-            let original_char = text[row][col];
-            text[row][col] = '#';
-            if is_in_endless_loop(&text, starting_position, cols, rows) {
-                sum += 1;
-            }
-            text[row][col] = original_char;
+            current_position = (nx as usize, ny as usize);
         }
     }
 
-    println!("{}", sum);
     let elapsed = now.elapsed();
     println!("Elapsed: {:.2?}", elapsed);
+    println!("Result: {}", sum);
 }
 
 #[inline(always)]
@@ -73,7 +86,7 @@ fn is_in_endless_loop(
 
         let next_position = text[ny as usize][nx as usize];
 
-        if next_position == '#' {
+        if next_position == '#' || next_position == '0' {
             current_direction_i = (current_direction_i + 1) % 4;
         } else {
             current_position = (nx as usize, ny as usize);
