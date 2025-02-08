@@ -41,7 +41,7 @@ fn main() {
         let ny = current_position.1 as isize + DIRECTIONS[current_direction_i].1;
 
         if nx < 0 || ny < 0 || nx >= cols as isize || ny >= rows as isize {
-            break
+            break;
         }
 
         let next_position = text[ny as usize][nx as usize];
@@ -51,10 +51,10 @@ fn main() {
         } else {
             let mut alternate_text = text.clone();
             alternate_text[ny as usize][nx as usize] = '0';
-            if is_in_endless_loop(&alternate_text, starting_position, cols, rows) {
-                if obstacles_checked.insert((nx, ny)) {
-                    sum += 1;
-                }
+            if is_in_endless_loop(&alternate_text, starting_position, cols, rows)
+                && obstacles_checked.insert((nx, ny))
+            {
+                sum += 1;
             }
             current_position = (nx as usize, ny as usize);
         }
@@ -65,7 +65,6 @@ fn main() {
     println!("Result: {}", sum);
 }
 
-#[inline(always)]
 fn is_in_endless_loop(
     text: &[Vec<char>],
     starting_position: (usize, usize),
