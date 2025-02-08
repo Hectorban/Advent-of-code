@@ -1,5 +1,6 @@
 use std::fs;
 
+
 fn main() {
     let input = fs::read_to_string("inputs/1-2.txt").expect("Problem while reading from file.");
     println!("{}", input);
@@ -9,6 +10,9 @@ fn main() {
     let mut list_one:Vec<i32> = vec![];
     let mut list_two:Vec<i32> = vec![];
 
+    let mut arrays = vec![1, 2, 3];
+    arrays[4] = 5;
+ 
     for line in lines {
         let mut split = line.split(' ');
         let first_number: i32 = split.next().unwrap().parse().unwrap();
