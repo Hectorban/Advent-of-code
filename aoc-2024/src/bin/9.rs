@@ -13,7 +13,7 @@ fn main() {
         })
         .collect();
 
-    let updates = updates(&input, rules.clone());
+    let updates = updates(&input, rules.len() + 1);
 
     let result: u16 = updates
         .filter_map(|update| {
@@ -26,8 +26,8 @@ fn main() {
     println!("{}", result);
 }
 
-fn updates(input: &str, rules: HashSet<(u8, u8)>) -> impl Iterator<Item = Vec<u8>> + '_ {
-    input.lines().skip(rules.len() + 1).map(|update| {
+fn updates(input: &str, skip_len: usize) -> impl Iterator<Item = Vec<u8>> + '_ {
+    input.lines().skip(skip_len).map(|update| {
         update
             .split(',')
             .filter_map(|num| num.parse().ok())
