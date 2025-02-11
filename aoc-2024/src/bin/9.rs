@@ -1,57 +1,36 @@
 use std::fs;
+use std::collections::HashSet;
 
 fn main() {
     let input = fs::read_to_string("inputs/9-10.txt").expect("Problem while reading from file.");
 
-    let mut parts = input.split("\n\n");
-    let rules: Vec<(i32, i32)> = parts
-        .next()
-        .unwrap()
+    let rules: HashSet<(u8, u8)> = input
         .lines()
-        .map(|r| {
-            let mut parsed = r.split('|');
-            (
-                parsed.next().unwrap().parse::<i32>().unwrap(),
-                parsed.next().unwrap().parse::<i32>().unwrap(),
-            )
-        })
-        .collect();
-    println!("{:?}", rules);
-
-    let updates: Vec<Vec<i32>> = parts
-        .next()
-        .unwrap()
-        .lines()
-        .map(|l| {
-            l.split(',')
-                .map(|u| u.parse::<i32>().unwrap())
-                .collect::<Vec<i32>>()
+        .take_while(|line| !line.is_empty())
+        .filter_map(|line| {
+            line.split_once('|')
+                .map(|(a, b)| (a.parse().unwrap(), b.parse().unwrap()))
         })
         .collect();
 
-    for update_line in updates {
-        println!("{:?}", update_line);
-        let length = update_line.len();
-        for i in 0..length {
-            let update = update_line[i];
-            let relevant_rules: Vec<&(i32, i32)> = rules
-                .iter()
-                .filter(|x| x.0 == update || x.1 == update)
-                .collect();
-            let r_length = relevant_rules.len();
+    let updates = updates(&input, rules.clone());
 
-            for comparisoni in 0..length {
-                let comparison = update_line[comparisoni];
-                if comparison == update {
-                    continue;
-                }
-                println!("{} {}", update, comparison);
+    let result: u16 = updates
+        .filter_map(|update| {
+            update
+                .is_sorted_by(|a, b| !rules.contains(&(*b, *a)))
+                .then_some(u16::from(update[update.len() / 2]))
+        })
+        .sum();
 
-                for rulei in 0..r_length {
-                    let rule = relevant_rules[rulei];
-                    println!("{:?}", rule);
-                }
-            }
-        }
-    }
+    println!("{}", result);
+}
+
+fn updates(input: &str, rules: HashSet<(u8, u8)>) -> impl Iterator<Item = Vec<u8>> + '_ {
+    input.lines().skip(rules.len() + 1).map(|update| {
+        update
+            .split(',')
+            .filter_map(|num| num.parse().ok())
+            .collect()
+    })
 }

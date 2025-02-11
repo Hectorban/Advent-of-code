@@ -1,5 +1,5 @@
 use std::collections::HashSet;
-use std::usize;
+use std::time::Instant;
 
 const INPUT: &str = include_str!("../../inputs/11-12.txt");
 
@@ -11,7 +11,6 @@ const DIRECTIONS: [(isize, isize); 4] = [
 ];
 
 fn main() {
-    use std::time::Instant;
     let now = Instant::now();
 
     let mut current_position = (0, 0);
