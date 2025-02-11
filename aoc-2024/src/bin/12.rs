@@ -1,9 +1,9 @@
-use std::collections::HashSet;
+use rustc_hash::FxHashSet;
 use std::time::Instant;
 
 const INPUT: &str = include_str!("../../inputs/11-12.txt");
 
-const DIRECTIONS: [(isize, isize); 4] = [
+const DIRECTIONS: [(i16, i16); 4] = [
     (0, -1), // Up
     (1, 0),  // Right
     (0, 1),  // Down
@@ -13,8 +13,8 @@ const DIRECTIONS: [(isize, isize); 4] = [
 fn main() {
     let now = Instant::now();
 
-    let mut current_position = (0, 0);
-    let mut starting_position = (0, 0);
+    let mut current_position: (i16, i16) = (0, 0);
+    let mut starting_position: (i16, i16) = (0, 0);
     let text: Vec<Vec<char>> = INPUT
         .lines()
         .map(|l| l.chars().collect::<Vec<char>>())
@@ -23,23 +23,23 @@ fn main() {
     for (j, line) in text.iter().enumerate() {
         for (i, &char) in line.iter().enumerate() {
             if char == '^' {
-                current_position = (i, j);
-                starting_position = (i, j);
+                current_position = (i as i16, j as i16);
+                starting_position = (i as i16, j as i16);
             }
         }
     }
 
     let mut current_direction_i = 0;
-    let cols = text.len();
-    let rows = text[0].len();
+    let cols: i16 = text.len() as i16;
+    let rows: i16 = text[0].len() as i16;
     let mut sum = 0;
-    let mut obstacles_checked: HashSet<(isize, isize)> = HashSet::new();
+    let mut obstacles_checked: FxHashSet<(i16, i16)> = FxHashSet::default();
 
     loop {
-        let nx = current_position.0 as isize + DIRECTIONS[current_direction_i].0;
-        let ny = current_position.1 as isize + DIRECTIONS[current_direction_i].1;
+        let nx = current_position.0 + DIRECTIONS[current_direction_i].0;
+        let ny = current_position.1 + DIRECTIONS[current_direction_i].1;
 
-        if nx < 0 || ny < 0 || nx >= cols as isize || ny >= rows as isize {
+        if nx < 0 || ny < 0 || nx >= cols || ny >= rows {
             break;
         }
 
@@ -55,7 +55,7 @@ fn main() {
             {
                 sum += 1;
             }
-            current_position = (nx as usize, ny as usize);
+            current_position = (nx, ny);
         }
     }
 
@@ -66,19 +66,19 @@ fn main() {
 
 fn is_in_endless_loop(
     text: &[Vec<char>],
-    starting_position: (usize, usize),
-    cols: usize,
-    rows: usize,
+    starting_position: (i16, i16),
+    cols: i16,
+    rows: i16,
 ) -> bool {
-    let mut visited_states: HashSet<((usize, usize), usize)> = HashSet::new();
+    let mut visited_states: FxHashSet<((i16, i16), usize)> = FxHashSet::default();
     let mut current_position = starting_position;
     let mut current_direction_i = 0;
 
     loop {
-        let nx = current_position.0 as isize + DIRECTIONS[current_direction_i].0;
-        let ny = current_position.1 as isize + DIRECTIONS[current_direction_i].1;
+        let nx = current_position.0 + DIRECTIONS[current_direction_i].0;
+        let ny = current_position.1 + DIRECTIONS[current_direction_i].1;
 
-        if nx < 0 || ny < 0 || nx >= cols as isize || ny >= rows as isize {
+        if nx < 0 || ny < 0 || nx >= cols || ny >= rows {
             return false;
         }
 
@@ -87,7 +87,7 @@ fn is_in_endless_loop(
         if next_position == '#' || next_position == '0' {
             current_direction_i = (current_direction_i + 1) % 4;
         } else {
-            current_position = (nx as usize, ny as usize);
+            current_position = (nx, ny);
 
             if !visited_states.insert((current_position, current_direction_i)) {
                 return true;
